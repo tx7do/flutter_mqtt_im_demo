@@ -1,32 +1,33 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_mqtt_im_demo/mqtt/MQTTAppState.dart';
-import 'package:flutter_mqtt_im_demo/mqtt/MQTTManager.dart';
-import 'package:flutter_mqtt_im_demo/view/chat_page.dart';
-import 'package:flutter_mqtt_im_demo/widget/argonButton.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
+import 'package:flutter_mqtt_im_demo/mqtt/mqtt_app_state.dart';
+import 'package:flutter_mqtt_im_demo/mqtt/mqtt_manager.dart';
+import 'package:flutter_mqtt_im_demo/view/chat_page.dart';
+import 'package:flutter_mqtt_im_demo/widget/argon_button.dart';
+
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
-  _HomePageState createState() {
-    return _HomePageState();
+  HomePageState createState() {
+    return HomePageState();
   }
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   String _community = "";
   String _userName = "";
 
   late MQTTAppState currentAppState;
   late MQTTManager manager;
 
-  TextEditingController _communityController = new TextEditingController();
-  TextEditingController _userNameController = new TextEditingController();
+  final TextEditingController _communityController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
 
   @override
   void initState() {
@@ -43,7 +44,7 @@ class _HomePageState extends State<HomePage> {
     final MQTTAppState appState = Provider.of<MQTTAppState>(context);
     // Keep a reference to the app state.
     currentAppState = appState;
-    ScreenUtil.init(context, designSize: Size(751, 1334));
+    ScreenUtil.init(context, designSize: const Size(751, 1334));
 
     _prepareStateMessageFrom(currentAppState.getAppConnectionState);
     // TODO: implement build
@@ -51,7 +52,7 @@ class _HomePageState extends State<HomePage> {
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: <Widget>[
-          Container(
+          SizedBox(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             child: Image.asset(
@@ -60,21 +61,21 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           BackdropFilter(
-            filter: new ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-            child: new Container(
+            filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+            child: Container(
               color: Colors.white.withOpacity(0.1),
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
             ),
           ),
-          Container(
+          SizedBox(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             child: Container(
               margin: EdgeInsets.only(top: 250.h),
               child: Column(
                 children: <Widget>[
-                  Container(
+                  SizedBox(
                     width: 120.w,
                     child: Image.asset("assets/image/1.png"),
                   ),
@@ -85,10 +86,10 @@ class _HomePageState extends State<HomePage> {
                       controller: _communityController,
                       keyboardAppearance: Brightness.light,
                       cursorColor: Colors.white,
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
+                      style: const TextStyle(color: Colors.white),
+                      decoration: const InputDecoration(
                         fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.only(left: 0, bottom: 0, top: 0, right: 0),
+                        contentPadding: EdgeInsets.only(left: 0, bottom: 0, top: 0, right: 0),
                         labelText: "Community Name",
                         labelStyle: TextStyle(color: Colors.white),
                         enabledBorder: UnderlineInputBorder(
@@ -107,10 +108,10 @@ class _HomePageState extends State<HomePage> {
                       controller: _userNameController,
                       keyboardAppearance: Brightness.light,
                       cursorColor: Colors.white,
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
+                      style: const TextStyle(color: Colors.white),
+                      decoration: const InputDecoration(
                         fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.only(left: 0, bottom: 0, top: 0, right: 0),
+                        contentPadding: EdgeInsets.only(left: 0, bottom: 0, top: 0, right: 0),
                         labelText: "User Name",
                         labelStyle: TextStyle(color: Colors.white),
                         enabledBorder: UnderlineInputBorder(
@@ -138,16 +139,16 @@ class _HomePageState extends State<HomePage> {
                           stopLoading();
                         }
                       },
-                      child: Text(
-                        "Login",
-                        style: TextStyle(color: Colors.blue, fontSize: 18, fontWeight: FontWeight.w700),
-                      ),
                       loader: Container(
-                        padding: EdgeInsets.all(10),
-                        child: CircularProgressIndicator(),
+                        padding: const EdgeInsets.all(10),
+                        child: const CircularProgressIndicator(),
                       ),
                       borderRadius: 5.0,
                       color: Colors.white,
+                      child: const Text(
+                        "Login",
+                        style: TextStyle(color: Colors.blue, fontSize: 18, fontWeight: FontWeight.w700),
+                      ),
                     ),
                   )
                 ],
@@ -163,7 +164,7 @@ class _HomePageState extends State<HomePage> {
     switch (state) {
       case MQTTAppConnectionState.connected:
         debugPrint("MQTT Connected");
-        Future.delayed(Duration(milliseconds: 200)).then((e) {
+        Future.delayed(const Duration(milliseconds: 200)).then((e) {
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
             return ChangeNotifierProvider<MQTTAppState>.value(
               value: currentAppState,

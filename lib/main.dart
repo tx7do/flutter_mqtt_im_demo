@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mqtt_im_demo/view/home_page.dart';
 import 'package:provider/provider.dart';
 
-import 'mqtt/MQTTAppState.dart';
+import 'package:flutter_mqtt_im_demo/view/home_page.dart';
+import 'package:flutter_mqtt_im_demo/mqtt/mqtt_app_state.dart';
 
 void main() {
   final MQTTAppState mqttAppState = MQTTAppState();
@@ -10,12 +10,14 @@ void main() {
   runApp(
     ChangeNotifierProvider.value(
       value: mqttAppState,
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -37,6 +39,6 @@ class MyApp extends StatelessWidget {
           // closer together (more dense) than on mobile platforms.
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: HomePage());
+        home: const HomePage());
   }
 }

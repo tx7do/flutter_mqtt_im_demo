@@ -2,10 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_mqtt_im_demo/mqtt/MQTTAppState.dart';
-import 'package:flutter_mqtt_im_demo/mqtt/MQTTManager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+
+import 'package:flutter_mqtt_im_demo/mqtt/mqtt_app_state.dart';
+import 'package:flutter_mqtt_im_demo/mqtt/mqtt_manager.dart';
 
 class ChatModel {
   late bool isMineMessage;
@@ -18,16 +19,16 @@ class ChatPage extends StatefulWidget {
   final String? userName;
   final MQTTManager? mqttManager;
 
-  ChatPage({Key? key, this.community, this.mqttManager, this.userName}) : super(key: key);
+  const ChatPage({super.key, this.community, this.mqttManager, this.userName});
 
   @override
-  _ChatPageState createState() {
-    return _ChatPageState();
+  ChatPageState createState() {
+    return ChatPageState();
   }
 }
 
-class _ChatPageState extends State<ChatPage> {
-  TextEditingController _messageController = new TextEditingController();
+class ChatPageState extends State<ChatPage> {
+  final TextEditingController _messageController = TextEditingController();
 
   List<ChatModel> chatHistoryList = [];
 
@@ -45,13 +46,13 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      backgroundColor: Color.fromRGBO(240, 240, 240, 1),
+      backgroundColor: const Color.fromRGBO(240, 240, 240, 1),
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.white38,
         title: Text(
           widget.community!,
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
         ),
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
@@ -60,7 +61,7 @@ class _ChatPageState extends State<ChatPage> {
           debugPrint("此时appState:${appState.getAppConnectionState}");
           return ListView(
             shrinkWrap: true,
-            physics: ClampingScrollPhysics(),
+            physics: const ClampingScrollPhysics(),
             children: <Widget>[
               _buildScrollableTextWith(appState.getReceivedText),
               _bottomBar(),
@@ -80,7 +81,7 @@ class _ChatPageState extends State<ChatPage> {
             TextField(
               style: TextStyle(fontSize: 35.sp),
               controller: _messageController,
-              decoration: InputDecoration(focusColor: Colors.cyan),
+              decoration: const InputDecoration(focusColor: Colors.cyan),
             ),
             Container(
               margin: EdgeInsets.only(left: 600.w),
@@ -90,7 +91,7 @@ class _ChatPageState extends State<ChatPage> {
                   _publishMessage(_messageController.text);
                   debugPrint("发送消息");
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.send,
                   color: Colors.cyan,
                 ),
@@ -117,13 +118,13 @@ class _ChatPageState extends State<ChatPage> {
         chatHistoryList.add(chatModel);
       }
     }
-    return Container(
+    return SizedBox(
       width: 800.w,
       height: 1000.h,
       child: ListView.builder(
         itemCount: chatHistoryList.length,
         itemBuilder: (context, index) {
-          return chatMainMessage.length > 1 ? _messageLine(index) : SizedBox();
+          return chatMainMessage.length > 1 ? _messageLine(index) : const SizedBox();
         },
       ),
     );
@@ -136,7 +137,7 @@ class _ChatPageState extends State<ChatPage> {
             children: <Widget>[
               Container(
                 padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     color: Color.fromRGBO(169, 232, 122, 1), borderRadius: BorderRadius.all(Radius.circular(5.0))),
                 height: 70.h,
                 margin: EdgeInsets.only(top: 20.h),
@@ -149,7 +150,7 @@ class _ChatPageState extends State<ChatPage> {
               ),
               Container(
                 margin: EdgeInsets.only(top: 20.h, left: 40.w, right: 40.w),
-                decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5.0))),
                 height: 70.h,
                 width: 70.h,
                 child: ClipRRect(
@@ -166,7 +167,7 @@ class _ChatPageState extends State<ChatPage> {
             children: <Widget>[
               Container(
                 margin: EdgeInsets.only(top: 20.h, left: 40.w, right: 40.w),
-                decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5.0))),
                 height: 70.h,
                 width: 70.h,
                 child: ClipRRect(
@@ -178,7 +179,8 @@ class _ChatPageState extends State<ChatPage> {
               ),
               Container(
                 padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                decoration:
+                    const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(5.0))),
                 height: 70.h,
                 margin: EdgeInsets.only(top: 20.h),
                 child: Center(
@@ -194,7 +196,7 @@ class _ChatPageState extends State<ChatPage> {
 
   void _publishMessage(String text) {
     String? osPrefix = widget.userName;
-    final String message = osPrefix! + '@:' + text;
+    final String message = '${osPrefix!}@:$text';
     widget.mqttManager?.publish(message);
     _messageController.clear();
   }

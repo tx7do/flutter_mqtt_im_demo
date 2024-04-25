@@ -3,14 +3,13 @@ import 'package:flutter/cupertino.dart';
 enum MQTTAppConnectionState { connected, disconnected, connecting }
 
 class MQTTAppState with ChangeNotifier {
-  MQTTAppConnectionState _appConnectionState =
-      MQTTAppConnectionState.disconnected;
+  MQTTAppConnectionState _appConnectionState = MQTTAppConnectionState.disconnected;
   String _receivedText = '';
   String _historyText = '';
 
   void setReceivedText(String text) {
     _receivedText = text;
-    _historyText = _historyText + '\n' + _receivedText;
+    _historyText = '$_historyText\n$_receivedText';
     notifyListeners();
   }
 
