@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mqtt_im_demo/utils/platform.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
@@ -156,7 +157,7 @@ class ChatPageState extends State<ChatPage> {
                 child: ClipRRect(
                     borderRadius: BorderRadius.circular(5.0),
                     child: Image.asset(
-                      Platform.isIOS ? "assets/image/icon_2.JPG" : "assets/image/icon_1.JPG",
+                      PlatformUtils.isIOS ? "assets/image/icon_2.JPG" : "assets/image/icon_1.JPG",
                       fit: BoxFit.contain,
                     )),
               )

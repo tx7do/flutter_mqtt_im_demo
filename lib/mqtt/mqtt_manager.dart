@@ -130,7 +130,9 @@ class MQTTManager {
   void publish(String message) {
     final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
     builder.addString(message);
-    _client?.publishMessage(_topic, MqttQos.exactlyOnce, builder.payload!);
+    if (_client != null) {
+      _client.publishMessage(_topic, MqttQos.exactlyOnce, builder.payload!);
+    }
   }
 
   /// The subscribed callback
